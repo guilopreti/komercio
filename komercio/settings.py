@@ -41,7 +41,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APP = ["rest_framework", "rest_framework.authtoken"]
 
-MY_APPS = ["accounts"]
+MY_APPS = ["accounts", "products"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APP + MY_APPS
 
@@ -129,3 +129,9 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+}
