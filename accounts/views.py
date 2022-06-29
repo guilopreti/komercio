@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView, Response, status
 
 from .models import User
-from .serializers import LoginSerializer, UserSerializer
+from .permissions import AccountOwnerPermission, AdminPermission
+from .serializers import ChangeActiveSerializer, LoginSerializer, UserSerializer
 
 
 # Create your views here.
@@ -42,3 +44,17 @@ class ListByDateView(generics.ListAPIView):
         max_users = self.kwargs["num"]
 
         return self.queryset.order_by("-date_joined")[0:max_users]
+
+
+class UpdateAccountView(generics.UpdateAPIView):
+    permission_classes = [AccountOwnerPermission]
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class ChangeActiveView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated, AdminPermission]
+
+    queryset = User.objects.all()
+    serializer_class = ChangeActiveSerializer

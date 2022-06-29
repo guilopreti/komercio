@@ -25,9 +25,34 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
+    def update(self, instance, validated_data):
+        if "password" in validated_data.keys():
+            instance.set_password(validated_data["password"])
+            instance.save()
+            del validated_data["password"]
 
-# class LoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ["email", "password"]
-#         extra_kwargs = {"email": {"write_only": True}, "password": {"write_only": True}}
+        for key, val in validated_data.items():
+            setattr(instance, key, val)
+        instance.save()
+        return instance
+
+
+class ChangeActiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "is_seller",
+            "is_active",
+            "date_joined",
+        ]
+        read_only_fields = [
+            "email",
+            "first_name",
+            "last_name",
+            "is_seller",
+            "date_joined",
+        ]
