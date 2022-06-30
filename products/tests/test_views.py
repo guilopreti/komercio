@@ -98,12 +98,13 @@ class ProductListsViewsTest(APITestCase):
             cls.products.append(product)
 
     def test_anyone_can_list_products(self):
+
         response = self.client.get("/api/products/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), len(self.products))
         self.assertEqual(
-            ListProductSerializer(self.products, many=True).data, response.data
+            ListProductSerializer(self.products[0:5], many=True).data,
+            response.data["results"],
         )
 
     def test_anyone_can_filter_a_product(self):

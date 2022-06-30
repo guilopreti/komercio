@@ -181,8 +181,10 @@ class UserUpdateListViewsTest(APITestCase):
         )
 
     def test_anyone_can_list_accounts(self):
+
         response = self.client.get("/api/accounts/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), len(self.users))
-        self.assertEqual(UserSerializer(self.users, many=True).data, response.data)
+        self.assertEqual(
+            UserSerializer(self.users[0:5], many=True).data, response.data["results"]
+        )
