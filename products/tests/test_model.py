@@ -14,7 +14,7 @@ class ProductModelTest(TestCase):
         cls.price = 99.99
         cls.quantity = 5
 
-        cls.user = User.objects.create(
+        cls.user = User.objects.create_user(
             email="gui@mail",
             password="123456",
             first_name="Guilherme",
@@ -62,7 +62,7 @@ class ProductModelTest(TestCase):
         self.assertEqual(product.is_active, True)
         self.assertEqual(product.user, self.user)
 
-    def test_user_may_contain_multiple_films(self):
+    def test_user_may_contain_multiple_products(self):
         products = []
         for _ in range(20):
             new_product = Product.objects.create(
@@ -89,7 +89,7 @@ class ProductModelTest(TestCase):
             )
             products.append(new_product)
 
-        user_two = User.objects.create(
+        user_two = User.objects.create_user(
             email="lucira@mail",
             password="123456",
             first_name="Lucira",

@@ -11,7 +11,7 @@ class UserModelTest(TestCase):
         cls.last_name = "Silva"
         cls.is_seller = False
 
-        cls.user = User.objects.create(
+        cls.user = User.objects.create_user(
             email=cls.email,
             password="123456",
             first_name=cls.first_name,
@@ -21,7 +21,7 @@ class UserModelTest(TestCase):
 
     def test_email_unique(self):
         with self.assertRaises(IntegrityError):
-            User.objects.create(
+            User.objects.create_user(
                 email=self.email,
                 password="123456",
                 first_name=self.first_name,
